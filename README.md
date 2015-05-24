@@ -61,12 +61,12 @@ features$VariableName<-gsub('\\_std',"_StandardDeviation",features$VariableName)
 #Select the columns we want to ultimately return
 selectedFeatures <- grepl("mean|std", features$OriginalVariableName)
 ```
-3. Reads the activity labels and associates column names to the data frame.
+* Reads the activity labels and associates column names to the data frame.
 ```{r}
 activities <- read.table('activity_labels.txt')
 names(activities) <- c('ActivityId', 'ActivityName')
 ```
-4. Define a function that reads the raw data and it includes only the columns required based on requirment #2. The function also reads the files containing the subject ids and the activity ids, then it merges this data
+* Defines a function that reads the raw data and it includes only the columns required based on requirment #2. The function also reads the files containing the subject ids and the activity ids, then it merges this data
 into the final dataset. The activity ids are replaced with the activity names as per requirment #3
 ```{r}
 #Define a function that takes the dataset type ('test' or 'train') and reads the dataset from the text file 
@@ -92,7 +92,7 @@ ReadData <- function (type)
         rawData
 }
 ```
-5. The next block reads the datasets and combines them into one dataset as per requirement #1:
+* The next block reads the datasets and combines them into one dataset as per requirement #1:
 ```{r}
 #Read the data using the previously created function
 trainData <- ReadData('train')
@@ -101,7 +101,7 @@ testData <- ReadData('test')
 #Union the data in both tables
 allData <- rbind(trainData, testData)
 ```
-6. The final block creates the final dataset that contains the averages of the selected variables, it writes to a file, and it prints it:
+* The final block creates the final dataset that contains the averages of the selected variables, it writes to a file, and it prints it:
 ```{r}
 #Create the dataset for the requirement at step 5 that computes the means of the columns by grouping the data by subject id and activity name
 tds <- allData %>% group_by(SubjectId, ActivityName) %>% summarise_each_(funs(mean), head(names(allData), -2)) %>% arrange(SubjectId, ActivityName)
